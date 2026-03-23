@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Three.js Academy — Learn by Doing</title>
 
-  <!-- Styles (HTML + CSS in this file; JavaScript is linked at the end as lessons.js) -->
   <style>
     :root{
       --bg:#0b0b0d;
@@ -20,53 +19,146 @@
     }
 
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,#050507 0%, #0b0b0d 100%);color:#e6eef6;font-family:var(--ui);-webkit-font-smoothing:antialiased}
-    .site-header{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;border-bottom:1px solid rgba(255,255,255,0.03)}
-    .brand h1{margin:0;font-size:20px;letter-spacing:0.6px}
+    html,body{
+      height:100%;
+      margin:0;
+      background:linear-gradient(180deg,#050507 0%, #0b0b0d 100%);
+      color:#e6eef6;
+      font-family:var(--ui);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .site-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:18px 28px;
+      border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+
+    .brand h1{margin:0;font-size:22px;letter-spacing:0.6px}
     .brand .tag{margin:4px 0 0;color:var(--muted);font-size:13px}
 
-    .container{display:grid;grid-template-columns:1fr 420px;gap:20px;padding:28px;max-width:1200px;margin:20px auto}
-    .canvas-wrap{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);min-height:420px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,0.03)}
-    .left .controls{display:flex;gap:10px;padding:12px 0;align-items:center}
-    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#dfe9f3;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
-    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#041025}
-    .select-label{color:var(--muted);font-size:13px;margin-left:auto}
+    .container{
+      display:grid;
+      grid-template-columns:1fr 420px;
+      gap:20px;
+      padding:28px;
+      max-width:1200px;
+      margin:20px auto;
+    }
 
-    .right{display:flex;flex-direction:column;gap:12px}
+    .canvas-wrap{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      min-height:420px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      position:relative;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .canvas-overlay-note{
+      position:absolute;
+      left:12px;
+      top:12px;
+      color:var(--muted);
+      font-size:13px;
+      background:rgba(0,0,0,0.25);
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      padding:12px 0;
+      align-items:center;
+    }
+
+    .btn{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:#dfe9f3;
+      padding:8px 12px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+    }
+
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      border:none;
+      color:#041025;
+    }
+
+    .select-label{
+      color:var(--muted);
+      font-size:13px;
+      margin-left:auto;
+    }
+
+    .right{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
     .lesson-meta h2{margin:0 0 6px 0}
     .lesson-meta p{margin:0;color:var(--muted)}
 
-    .code-pane{background:var(--panel);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.03)}
-    .code-toolbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:8px}
-    .code-block{background:#071018;color:#dff3ff;padding:12px;border-radius:8px;overflow:auto;max-height:320px;font-family:var(--mono);font-size:13px;line-height:1.45}
+    .code-pane{
+      background:var(--panel);
+      border-radius:10px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
 
-    .notes{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+    .code-toolbar{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      margin-bottom:8px;
+    }
+
+    .code-block{
+      background:#071018;
+      color:#dff3ff;
+      padding:12px;
+      border-radius:8px;
+      overflow:auto;
+      max-height:320px;
+      font-family:var(--mono);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .notes{
+      background:var(--glass);
+      padding:12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
     .notes h3{margin:0 0 8px 0}
     .notes ul{margin:0;padding-left:18px;color:var(--muted)}
 
-    .site-footer{text-align:center;padding:18px;color:var(--muted);font-size:13px;border-top:1px solid rgba(255,255,255,0.02);margin-top:20px}
-
-    /* PIN and attribution styling */
-    .pin-label {
+    .lesson-nav{
       display:flex;
-      align-items:center;
       gap:8px;
-      color:var(--muted);
-      font-size:13px;
-    }
-    .pin-label input {
-      width:72px;
-      padding:8px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,0.06);
-      background:transparent;
-      color:#e6eef6;
-      text-align:center;
-      font-weight:700;
-      letter-spacing:4px;
+      flex-wrap:wrap;
     }
 
-    .attribution {
+    .lesson-nav .btn{
+      font-size:13px;
+      padding:6px 10px;
+      border-radius:8px;
+    }
+
+    .attribution{
       margin-top:12px;
       padding:10px 12px;
       border-radius:10px;
@@ -74,15 +166,16 @@
       color:var(--muted);
       font-size:13px;
       border:1px solid rgba(255,255,255,0.02);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      text-align:center;
     }
 
-    .attribution.unlocked {
-      color:#dff3ff;
-      background:linear-gradient(90deg, rgba(45,212,191,0.12), rgba(96,165,250,0.06));
-      border-color:rgba(45,212,191,0.12);
+    .site-footer{
+      text-align:center;
+      padding:18px;
+      color:var(--muted);
+      font-size:13px;
+      border-top:1px solid rgba(255,255,255,0.02);
+      margin-top:20px;
     }
 
     @media (max-width:980px){
@@ -90,44 +183,30 @@
       .right{order:2}
       .canvas-wrap{min-height:360px}
     }
-
-    /* small helper for nav buttons */
-    .lesson-nav { display:flex; gap:8px; flex-wrap:wrap; }
-    .lesson-nav .btn { font-size:13px; padding:6px 10px; border-radius:8px; }
-    .canvas-overlay-note { position:absolute; left:12px; top:12px; color:var(--muted); font-size:13px; background:rgba(0,0,0,0.25); padding:6px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.02); }
-
-    /* small accessibility focus styles */
-    button:focus, input:focus { outline:2px solid rgba(96,165,250,0.25); outline-offset:2px; }
   </style>
 </head>
+
 <body>
   <header class="site-header">
     <div class="brand">
       <h1>Three.js Academy</h1>
       <p class="tag">From basics to performance — interactive lessons you can run and edit</p>
     </div>
-    <nav class="lesson-nav" id="lessonNav" aria-label="Lessons"></nav>
+    <nav class="lesson-nav" id="lessonNav"></nav>
   </header>
 
   <main class="container">
     <section class="left">
-      <div id="canvas-wrap" class="canvas-wrap" aria-live="polite">
+      <div id="canvas-wrap" class="canvas-wrap">
         <div class="canvas-overlay-note">Canvas</div>
       </div>
 
       <div class="controls">
-        <label class="pin-label">
-          Enter PIN
-          <input id="pinInput" type="password" inputmode="numeric" maxlength="6" placeholder="••••" aria-label="PIN" />
-        </label>
-
-        <button id="unlockBtn" class="btn" aria-pressed="false">Unlock</button>
-
-        <button id="runBtn" class="btn primary" disabled>Run Lesson</button>
-        <button id="resetBtn" class="btn" disabled>Reset</button>
+        <button id="runBtn" class="btn primary">Run Lesson</button>
+        <button id="resetBtn" class="btn">Reset</button>
 
         <label class="select-label">Canvas size
-          <select id="canvasSize" aria-label="Canvas size">
+          <select id="canvasSize">
             <option value="auto">Responsive</option>
             <option value="800x600">800×600</option>
             <option value="1024x768">1024×768</option>
@@ -135,8 +214,8 @@
         </label>
       </div>
 
-      <div id="attribution" class="attribution" aria-hidden="true">
-        <strong>Made by AI for Lomos tech to learn Three.js</strong>
+      <div class="attribution">
+        <strong>Made by AI for Lomos Tech to learn Three.js</strong>
       </div>
     </section>
 
@@ -146,26 +225,29 @@
         <p id="lessonDesc">Choose a lesson to begin. Each lesson includes runnable code, explanation, and tips.</p>
       </div>
 
-      <div class="code-pane" aria-live="polite">
+      <div class="code-pane">
         <div class="code-toolbar">
           <button id="copyCode" class="btn">Copy</button>
           <button id="toggleCode" class="btn">Toggle Code</button>
         </div>
-        <pre id="code" class="code-block" aria-label="Lesson code"></pre>
+        <pre id="code" class="code-block"></pre>
       </div>
 
       <div class="notes">
         <h3>Notes & Tips</h3>
-        <ul id="lessonNotes" aria-live="polite"></ul>
+        <ul id="lessonNotes"></ul>
+      </div>
+
+      <div class="attribution">
+        <strong>Made by AI for Lomos Tech to learn Three.js</strong>
       </div>
     </aside>
   </main>
 
   <footer class="site-footer">
-    <small>Built for learning • Test in Chrome/Edge/Firefox • Three.js r158+</small>
+    <small>Made by AI for Lomos Tech to learn Three.js</small>
   </footer>
 
-  <!-- Link to the JavaScript module (part 2). Save the JS as lessons.js in the same folder. -->
   <script type="module" src="lessons.js"></script>
 </body>
 </html>
